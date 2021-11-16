@@ -5,7 +5,7 @@
 #
 #   AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=$ipaddr
 #
-# as suggested in Microsoft's documentation at https://docs.microsoft.com/en-us/azure/cosmos-db/linux-emulator.
+# as suggested in the documentation at https://docs.microsoft.com/en-us/azure/cosmos-db/linux-emulator.
 # We would not be able to connect to the emulator at all on appveyor, regardless of the connection mode.
 # To connect to the emulator, we must use Gateway mode. Direct mode will not work.
 
@@ -19,5 +19,5 @@ docker run \
   --cpus=2.0 \
   --name=azure-cosmos-emulator-linux \
   -e AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3 \
-  -e AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true \
+  -e AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=false \
   mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
