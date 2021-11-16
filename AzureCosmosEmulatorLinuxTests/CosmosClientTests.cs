@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Azure.Cosmos;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace AzureCosmosEmulatorLinuxTests
 {
@@ -19,13 +20,27 @@ namespace AzureCosmosEmulatorLinuxTests
 
         private const string PartitionKeyPath = "/" + nameof(TestItem.PartitionKey);
 
-        [Fact]
-        public async Task CanConnectToAzureCosmosEmulator()
+        private readonly ITestOutputHelper _output;
+
+        public CosmosClientTests(ITestOutputHelper output)
         {
+            _output = output;
+        }
+
+        [Theory]
+        [InlineData(ConnectionMode.Direct, false)]
+        [InlineData(ConnectionMode.Direct, true)]
+        [InlineData(ConnectionMode.Gateway, false)]
+        [InlineData(ConnectionMode.Gateway, true)]
+        public async Task CanConnectToAzureCosmosEmulator(ConnectionMode connectionMode, bool limitToEndpoint)
+        {
+            _output.WriteLine($"Testing with ConnectionMode = '{connectionMode}' and LimitToEndpoint = '{limitToEndpoint}' ...");
+
             // Arrange
             CosmosClientOptions clientOptions = new()
             {
-                ConnectionMode = ConnectionMode.Gateway
+                ConnectionMode = connectionMode,
+                LimitToEndpoint = limitToEndpoint
             };
 
             CosmosClient client = new(ConnectionString, clientOptions);
@@ -35,11 +50,17 @@ namespace AzureCosmosEmulatorLinuxTests
 
             // Assert
             response.StatusCode.Should().BeOneOf(HttpStatusCode.Created, HttpStatusCode.OK);
+
+            _output.WriteLine($"Created database if it did not exist. StatusCode = {response.StatusCode}.");
         }
 
-        [Fact]
-        public async Task CanCreateContainer()
+        [Theory]
+        [InlineData(ConnectionMode.Direct)]
+        [InlineData(ConnectionMode.Gateway)]
+        public async Task CanCreateContainer(ConnectionMode connectionMode)
         {
+            _output.WriteLine($"Testing with ConnectionMode = '{connectionMode}' ...");
+
             // Arrange
             CosmosClientOptions clientOptions = new()
             {
@@ -47,12 +68,13 @@ namespace AzureCosmosEmulatorLinuxTests
                 {
                     HttpMessageHandler httpMessageHandler = new HttpClientHandler
                     {
-                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                        ServerCertificateCustomValidationCallback =
+                            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
                     };
 
                     return new HttpClient(httpMessageHandler);
                 },
-                ConnectionMode = ConnectionMode.Gateway
+                ConnectionMode = connectionMode
             };
 
             CosmosClient client = new(ConnectionString, clientOptions);
@@ -64,15 +86,21 @@ namespace AzureCosmosEmulatorLinuxTests
 
             // Assert
             response.StatusCode.Should().BeOneOf(HttpStatusCode.Created, HttpStatusCode.OK);
+
+            _output.WriteLine($"Created container if it did not exist. StatusCode = {response.StatusCode}.");
         }
 
-        [Fact]
-        public async Task CanCreateItem()
+        [Theory]
+        [InlineData(ConnectionMode.Direct)]
+        [InlineData(ConnectionMode.Gateway)]
+        public async Task CanCreateItem(ConnectionMode connectionMode)
         {
+            _output.WriteLine($"Testing with ConnectionMode = '{connectionMode}' ...");
+
             // Arrange
             CosmosClientOptions clientOptions = new()
             {
-                ConnectionMode = ConnectionMode.Gateway
+                ConnectionMode = connectionMode
             };
 
             CosmosClient client = new(ConnectionString, clientOptions);
@@ -94,6 +122,8 @@ namespace AzureCosmosEmulatorLinuxTests
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Created);
+
+            _output.WriteLine($"Created item. StatusCode = {response.StatusCode}.");
         }
     }
 }

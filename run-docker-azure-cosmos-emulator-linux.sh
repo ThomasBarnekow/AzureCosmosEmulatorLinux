@@ -12,7 +12,7 @@ docker run \
   -p 10253:10253 \
   -p 10254:10254 \
   -m 3g \
-  --cpus=2.0 \
+  --cpus=1.0 \
   --name=azure-cosmos-emulator-linux \
   -e AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3 \
   -e AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true \

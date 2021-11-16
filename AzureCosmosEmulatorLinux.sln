@@ -8,7 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B4B1575C-2FC2-45A6-A8E9-9499B2B8AA54}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
+		GetEmulatorCertificate.ps1 = GetEmulatorCertificate.ps1
 		install-azure-cosmos-emulator-linux-certificates.sh = install-azure-cosmos-emulator-linux-certificates.sh
+		print-environment-info.sh = print-environment-info.sh
 		pull-docker-azure-cosmos-emulator-linux.sh = pull-docker-azure-cosmos-emulator-linux.sh
 		run-docker-azure-cosmos-emulator-linux.sh = run-docker-azure-cosmos-emulator-linux.sh
 	EndProjectSection

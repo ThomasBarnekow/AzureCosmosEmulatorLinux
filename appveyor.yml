@@ -31,18 +31,6 @@ before_build:
 
 build_script:
 - sh: |
-    echo "See whether the azure-cosmos-emulator-linux Docker container is running ..."
-    docker ps --all
-
-    echo "Verify that the container port 8081 is mapped correctly and accessible from an environment outside of the container ..."
-    netstat -lt
-
-    echo "Trying to access Azure Cosmos Emulator on localhost:8081 ..."
-    curl -k https://localhost:8081/_explorer/emulator.pem
+    bash ./print-environment-info.sh
 - pwsh: |
-    Write-Output ".NET version:"
-    dotnet --version
-
-    Write-Output "Building and testing Release configuration ..."
-    dotnet build -c Release
-    dotnet test -c Release --no-build
+    dotnet test -c Release -l "console;verbosity=detailed"
