@@ -24,11 +24,6 @@ echo '```'
 docker port azure-cosmos-emulator-linux
 echo '```'
 
-#echo
-#ipaddr="`ifconfig eth0 | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
-#echo "The Docker container was run with AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=$ipaddr."
-#echo
-
 echo
 echo "### NETWORK INTERFACE CONFIGURATION"
 echo

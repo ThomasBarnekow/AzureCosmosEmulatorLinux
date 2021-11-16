@@ -33,4 +33,4 @@ build_script:
 - sh: |
     bash ./print-environment-info.sh
 - pwsh: |
-    dotnet test -c Release -l "console;verbosity=detailed"
+    dotnet test -c Release -l "console;verbosity=normal"

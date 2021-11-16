@@ -28,19 +28,18 @@ namespace AzureCosmosEmulatorLinuxTests
         }
 
         [Theory]
-        [InlineData(ConnectionMode.Direct, false)]
-        [InlineData(ConnectionMode.Direct, true)]
-        [InlineData(ConnectionMode.Gateway, false)]
-        [InlineData(ConnectionMode.Gateway, true)]
-        public async Task CanConnectToAzureCosmosEmulator(ConnectionMode connectionMode, bool limitToEndpoint)
+        [InlineData(ConnectionMode.Direct)]
+        [InlineData(ConnectionMode.Gateway)]
+        public async Task CanConnectToAzureCosmosEmulator(ConnectionMode connectionMode)
         {
-            _output.WriteLine($"Testing with ConnectionMode = '{connectionMode}' and LimitToEndpoint = '{limitToEndpoint}' ...");
+            _output.WriteLine($"Testing with ConnectionMode = '{connectionMode}' ...");
 
             // Arrange
             CosmosClientOptions clientOptions = new()
             {
                 ConnectionMode = connectionMode,
-                LimitToEndpoint = limitToEndpoint
+                LimitToEndpoint = true,
+                RequestTimeout = TimeSpan.FromSeconds(5)
             };
 
             CosmosClient client = new(ConnectionString, clientOptions);
@@ -74,7 +73,9 @@ namespace AzureCosmosEmulatorLinuxTests
 
                     return new HttpClient(httpMessageHandler);
                 },
-                ConnectionMode = connectionMode
+                ConnectionMode = connectionMode,
+                LimitToEndpoint = true,
+                RequestTimeout = TimeSpan.FromSeconds(5)
             };
 
             CosmosClient client = new(ConnectionString, clientOptions);
@@ -100,7 +101,9 @@ namespace AzureCosmosEmulatorLinuxTests
             // Arrange
             CosmosClientOptions clientOptions = new()
             {
-                ConnectionMode = connectionMode
+                ConnectionMode = connectionMode,
+                LimitToEndpoint = true,
+                RequestTimeout = TimeSpan.FromSeconds(5)
             };
 
             CosmosClient client = new(ConnectionString, clientOptions);
