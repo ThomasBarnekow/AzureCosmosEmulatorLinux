@@ -2,7 +2,9 @@
 
 # Determine the IP address of the local machine.
 # This step is required when Direct mode setting is configured using Cosmos DB SDKs.
-ipaddr="`ifconfig eth0 | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
+# ipaddr="`ifconfig eth0 | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
+
+# echo "Using AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=$ipaddr"
 
 # Run the image, creating a container called "azure-cosmos-emulator-linux".
 docker run \
@@ -16,5 +18,6 @@ docker run \
   --name=azure-cosmos-emulator-linux \
   -e AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3 \
   -e AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true \
-  -e AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=$ipaddr \
   mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+
+# -e AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=$ipaddr \
