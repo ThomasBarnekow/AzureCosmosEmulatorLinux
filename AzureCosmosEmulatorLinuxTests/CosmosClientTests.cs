@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Azure.Cosmos;
@@ -22,7 +23,12 @@ namespace AzureCosmosEmulatorLinuxTests
         public async Task CanConnectToAzureCosmosEmulator()
         {
             // Arrange
-            CosmosClient client = new(ConnectionString);
+            CosmosClientOptions clientOptions = new()
+            {
+                ConnectionMode = ConnectionMode.Gateway
+            };
+
+            CosmosClient client = new(ConnectionString, clientOptions);
 
             // Act
             DatabaseResponse response = await client.CreateDatabaseIfNotExistsAsync(DatabaseId);
@@ -35,7 +41,22 @@ namespace AzureCosmosEmulatorLinuxTests
         public async Task CanCreateContainer()
         {
             // Arrange
-            CosmosClient client = new(ConnectionString);
+            CosmosClientOptions clientOptions = new()
+            {
+                HttpClientFactory = () =>
+                {
+                    HttpMessageHandler httpMessageHandler = new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    };
+
+                    return new HttpClient(httpMessageHandler);
+                },
+                ConnectionMode = ConnectionMode.Gateway
+            };
+
+            CosmosClient client = new(ConnectionString, clientOptions);
+
             Database database = await client.CreateDatabaseIfNotExistsAsync(DatabaseId);
 
             // Act
@@ -49,7 +70,13 @@ namespace AzureCosmosEmulatorLinuxTests
         public async Task CanCreateItem()
         {
             // Arrange
-            CosmosClient client = new(ConnectionString);
+            CosmosClientOptions clientOptions = new()
+            {
+                ConnectionMode = ConnectionMode.Gateway
+            };
+
+            CosmosClient client = new(ConnectionString, clientOptions);
+
             Database database = await client.CreateDatabaseIfNotExistsAsync(DatabaseId);
             Container container = await database.CreateContainerIfNotExistsAsync(ContainerId, PartitionKeyPath);
 
