@@ -41,7 +41,7 @@ echo '```'
 echo
 echo "### EMULATOR CERTIFICATE"
 
-ipaddr="`ifconfig eth0 | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
+ipaddr="`ifconfig docker0 | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
 
 echo
 echo Using '`curl -k https://$ipaddr:8081/_explorer/emulator.pem`:'

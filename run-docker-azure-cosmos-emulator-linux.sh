@@ -9,7 +9,7 @@
 # We would not be able to connect to the emulator at all on appveyor, regardless of the connection mode.
 # To connect to the emulator, we must use Gateway mode. Direct mode will not work.
 
-ipaddr="`ifconfig eth0 | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
+ipaddr="`ifconfig docker0 | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
 
 echo "Running Docker container with IP address $ipaddr"
 
