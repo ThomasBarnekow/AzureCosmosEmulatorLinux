@@ -3,7 +3,7 @@ image: Ubuntu
 services:
 - docker
 
-install:
+before_build:
 - sh: |
     echo "Pulling Azure Cosmos Emulator Docker image for Linux ..."
     bash ./pull-docker-azure-cosmos-emulator-linux.sh

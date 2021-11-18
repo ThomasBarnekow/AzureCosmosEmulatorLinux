@@ -26,12 +26,16 @@ done
 
 if [[ $result -eq 0  ]]
 then
+  echo "Downloaded certificate:"
+  cat $certfile
+  echo
+
   echo "Updating CA certificates ..."
   sudo cp $certfile /usr/local/share/ca-certificates
   sudo update-ca-certificates
   echo
 
-  echo "Downloaded certificate:"
+  echo "Certificate text:"
   openssl x509 -in $certfile -text
   echo
 else
