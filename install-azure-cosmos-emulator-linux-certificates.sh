@@ -12,7 +12,7 @@ sleepTime=10
 
 while [[ "$result" != "0" && "$count" < "5" ]]; do
   echo "Trying to download certificate ..."
-  curl -k https://$ipaddr:8081/_explorer/emulator.pem > $certfile
+  curl -k https://$ipaddr:8081/_explorer/emulator.pem
   result=$?
   let "count++"
 
@@ -26,6 +26,9 @@ done
 
 if [[ $result -eq 0  ]]
 then
+  # To be on the safe side, download certificate again
+  curl -k https://$ipaddr:8081/_explorer/emulator.pem > $certfile
+
   echo "Downloaded certificate:"
   cat $certfile
   echo
