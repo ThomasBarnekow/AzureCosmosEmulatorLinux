@@ -16,14 +16,17 @@ build_script:
 
 before_test:
 - sh: |
-    echo "Installing Azure Cosmos Emulator SSL certificate ..."
-    sudo bash ./install-azure-cosmos-emulator-linux-certificates.sh
+    echo "Waiting 60 seconds ..."
+    sleep 60
 
     if [ -f "./nohup.out" ]; then
         echo "--- BEGIN CONTENTS OF NOHUP.OUT ---"
         cat ./nohup.out
         echo "--- END CONTENTS OF NOHUP.OUT ---"
     fi
+
+    echo "Installing Azure Cosmos Emulator SSL certificate ..."
+    sudo bash ./install-azure-cosmos-emulator-linux-certificates.sh
 
     bash ./print-environment-info.sh
 

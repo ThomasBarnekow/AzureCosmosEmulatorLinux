@@ -47,7 +47,7 @@ echo
 echo Using '`curl -k https://$ipaddr:8081/_explorer/emulator.pem`:'
 echo
 echo '```'
-curl -k https:/$ipaddr:8081/_explorer/emulator.pem
+curl -k https://$ipaddr:8081/_explorer/emulator.pem
 echo '```'
 
 echo

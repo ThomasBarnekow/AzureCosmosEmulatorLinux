@@ -33,14 +33,15 @@ then
   cat $certfile
   echo
 
+  echo "Certificate text:"
+  openssl x509 -in $certfile -text
+  echo
+
   echo "Updating CA certificates ..."
   sudo cp $certfile /usr/local/share/ca-certificates
   sudo update-ca-certificates
   echo
 
-  echo "Certificate text:"
-  openssl x509 -in $certfile -text
-  echo
 else
   echo "Could not download CA certificate!"
   false
