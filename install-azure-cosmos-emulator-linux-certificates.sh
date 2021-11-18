@@ -26,14 +26,14 @@ done
 
 if [[ $result -eq 0  ]]
 then
-  echo "Downloaded emulator SSL certificate."
-  echo
-  openssl x509 -in ~/emulatorcert.crt -text
-  echo
-
   echo "Updating CA certificates ..."
   sudo cp $certfile /usr/local/share/ca-certificates
   sudo update-ca-certificates
+  echo
+
+  echo "Downloaded certificate:"
+  openssl x509 -in $certfile -text
+  echo
 else
   echo "Could not download CA certificate!"
   false
