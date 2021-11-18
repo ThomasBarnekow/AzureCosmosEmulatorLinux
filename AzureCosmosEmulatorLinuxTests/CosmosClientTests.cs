@@ -46,8 +46,9 @@ namespace AzureCosmosEmulatorLinuxTests
 
         private IPAddress LocalIpAddress =>
             _localIpAddress ??= NetworkInterface.GetAllNetworkInterfaces()
-                .Where(nic => nic.OperationalStatus == OperationalStatus.Up &&
-                              nic.GetIPProperties().GatewayAddresses.Any())
+                //.Where(nic => nic.OperationalStatus == OperationalStatus.Up &&
+                //              nic.GetIPProperties().GatewayAddresses.Any())
+                .Where(nic => nic.Name == "docker0")
                 .SelectMany(nic => nic.GetIPProperties().UnicastAddresses)
                 .Where(ua => ua.Address.AddressFamily == AddressFamily.InterNetwork)
                 .Select(ua => ua.Address)
