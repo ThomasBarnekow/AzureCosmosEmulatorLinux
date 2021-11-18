@@ -9,6 +9,10 @@
 # We would not be able to connect to the emulator at all on appveyor, regardless of the connection mode.
 # To connect to the emulator, we must use Gateway mode. Direct mode will not work.
 
+ipaddr="`ifconfig eth0 | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
+
+echo "Running Docker container with IP address $ipaddr"
+
 docker run \
   -p 8081:8081 \
   -p 10251:10251 \
@@ -20,4 +24,5 @@ docker run \
   --name=azure-cosmos-emulator-linux \
   -e AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3 \
   -e AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=false \
+  -e AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=$ipaddr \
   mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
