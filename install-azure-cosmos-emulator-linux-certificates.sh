@@ -4,7 +4,6 @@ certfile=~/emulatorcert.crt
 echo "Certificate file: ${certfile}"
 
 ipaddr="`ifconfig eth0 | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
-
 echo "Downloading SSL certificate from IP address $ipaddr"
 
 result=1
@@ -27,6 +26,11 @@ done
 
 if [[ $result -eq 0  ]]
 then
+  echo "Downloaded emulator SSL certificate."
+  echo
+  openssl x509 -in ~/emulatorcert.crt -text
+  echo
+
   echo "Updating CA certificates ..."
   sudo cp $certfile /usr/local/share/ca-certificates
   sudo update-ca-certificates
