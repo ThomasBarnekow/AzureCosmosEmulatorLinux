@@ -41,16 +41,18 @@ echo '```'
 echo
 echo "### EMULATOR CERTIFICATE"
 
+ipaddr="`ifconfig docker0 | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' | head -n 1`"
+
 echo
-echo Using '`curl -k https://localhost:8081/_explorer/emulator.pem`:'
+echo Using '`curl -k https://$ipaddr:8081/_explorer/emulator.pem`:'
 echo
 echo '```'
-curl -k https://localhost:8081/_explorer/emulator.pem
+curl -k https://$ipaddr:8081/_explorer/emulator.pem
 echo '```'
 
 echo
-echo Using '`Invoke-WebRequest -Uri https://localhost:8081/_explorer/emulator.pem`:'
+echo Using '`Invoke-WebRequest -Uri https://$ipaddr:8081/_explorer/emulator.pem`:'
 echo
 echo '```'
-pwsh ./GetEmulatorCertificate.ps1
+pwsh ./GetEmulatorCertificate.ps1 $ipaddr
 echo '```'
